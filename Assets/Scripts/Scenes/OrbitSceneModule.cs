@@ -62,7 +62,25 @@ public class OrbitSceneModule : MonoBehaviour, ISceneModule
     {
         Debug.Log("🎬 OrbitSceneModule: Entering Orbit state");
         
-        // Enable orbits
+        // Make sure all spheres are active but set alpha to 0 (invisible)
+        foreach (var sphere in spheres)
+        {
+            if (sphere == null) continue;
+            sphere.gameObject.SetActive(true);
+            
+            var renderer = sphere.GetComponent<Renderer>();
+            if (renderer != null)
+            {
+                // Set renderer to fully transparent initially
+                Color color = renderer.material.color;
+                color.a = 0;
+                renderer.material.color = color;
+                renderer.enabled = true;
+                Debug.Log($"👁️ Sphere prepared (invisible): {sphere.gameObject.name}");
+            }
+        }
+        
+        // Enable orbits (they will start rotating immediately but spheres invisible)
         foreach (var orbit in discoveredOrbits)
         {
             if (orbit != null)
@@ -72,19 +90,64 @@ public class OrbitSceneModule : MonoBehaviour, ISceneModule
             }
         }
 
-        // Fade in orbits visually
+        // Enable orbit visualizers
+        var allVisualizers = FindObjectsOfType<OrbitVisualizer2D>();
+        foreach (var visualizer in allVisualizers)
+        {
+            if (visualizer != null)
+            {
+                visualizer.enabled = true;
+                var renderer = visualizer.GetComponent<LineRenderer>();
+                if (renderer != null)
+                    renderer.enabled = true;
+                Debug.Log($"✨ Enabled OrbitVisualizer2D: {visualizer.gameObject.name}");
+            }
+        }
+
+        // Start all fades in parallel (orbits canvas + sphere renderers)
+        List<IEnumerator> allFades = new List<IEnumerator>();
+        
+        // Add orbits canvas fade
         if (orbitsCanvasGroup != null)
         {
             orbitsCanvasGroup.alpha = 0;
             orbitsCanvasGroup.blocksRaycasts = true;
-            yield return TransitionUtility.Fade(orbitsCanvasGroup, 0, 1, fadeInTime);
+            Debug.Log($"📈 Starting orbitsCanvasGroup fade");
+            allFades.Add(TransitionUtility.Fade(orbitsCanvasGroup, 0, 1, fadeInTime));
         }
         else
         {
-            yield return new WaitForSeconds(fadeInTime);
+            Debug.LogWarning("⚠️ orbitsCanvasGroup not assigned - skipping visual fade");
+            allFades.Add(WaitRoutine(fadeInTime));
         }
+
+        // Add sphere renderer fades
+        foreach (var sphere in spheres)
+        {
+            if (sphere == null) continue;
+            var renderer = sphere.GetComponent<Renderer>();
+            if (renderer != null)
+            {
+                Debug.Log($"✨ Starting sphere fade for {sphere.gameObject.name}");
+                allFades.Add(TransitionUtility.FadeRenderer(renderer, 0, 1, fadeInTime));
+            }
+        }
+
+        // Run all fades in parallel
+        foreach (var fade in allFades)
+        {
+            StartCoroutine(fade);
+        }
+
+        // Wait for all fades to complete
+        yield return new WaitForSeconds(fadeInTime);
         
-        Debug.Log("✅ Orbit state ready - spheres rotating");
+        Debug.Log("✅ Orbit state ready - spheres rotating and visible");
+    }
+
+    private IEnumerator WaitRoutine(float duration)
+    {
+        yield return new WaitForSeconds(duration);
     }
 
     public IEnumerator Exit()

@@ -23,12 +23,13 @@ public class SceneTitleModule : MonoBehaviour, ISceneModule
     {
         Debug.Log("🎬 SceneTitleModule: Entering Title state");
         
-        // Hide orbits and detail UI
+        // Hide orbits and detail UI completely
         if (orbitsCanvasGroup != null)
         {
             Debug.Log("📉 Hiding orbits");
             orbitsCanvasGroup.alpha = 0;
             orbitsCanvasGroup.blocksRaycasts = false;
+            orbitsCanvasGroup.interactable = false;
         }
         else
         {

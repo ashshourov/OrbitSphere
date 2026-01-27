@@ -38,4 +38,31 @@ public static class TransitionUtility
 
         obj.position = target;
     }
+
+    public static IEnumerator FadeRenderer(Renderer renderer, float from, float to, float duration)
+    {
+        if (renderer == null)
+            yield break;
+
+        float t = 0;
+        Material mat = renderer.material;
+        Color startColor = mat.color;
+        Color endColor = mat.color;
+        endColor.a = to;
+        startColor.a = from;
+        mat.color = startColor;
+
+        while (t < duration)
+        {
+            Color currentColor = mat.color;
+            currentColor.a = Mathf.Lerp(from, to, t / duration);
+            mat.color = currentColor;
+            t += Time.deltaTime;
+            yield return null;
+        }
+
+        Color finalColor = mat.color;
+        finalColor.a = to;
+        mat.color = finalColor;
+    }
 }
