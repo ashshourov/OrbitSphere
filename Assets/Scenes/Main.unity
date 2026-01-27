@@ -203,10 +203,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45.25
+  m_fontSize: 24
   m_fontSizeBase: 24
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -284,7 +284,6 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 117951741}
   serializedVersion: 2
-<<<<<<< Updated upstream
   m_LocalRotation: {x: -0, y: -0, z: -0.050365645, w: 0.9987309}
   m_LocalPosition: {x: -400.64505, y: -865.58606, z: 0}
   m_LocalScale: {x: 0.63938, y: 0.63938, z: 0.63938}
@@ -292,15 +291,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 321500340}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -5.774}
-=======
-  m_LocalRotation: {x: -0, y: -0, z: -0.20096777, w: 0.9795979}
-  m_LocalPosition: {x: -0.634, y: 0.31, z: 0}
-  m_LocalScale: {x: 0.67797893, y: 0.67797893, z: 0.67797893}
-  m_ConstrainProportionsScale: 1
-  m_Children: []
-  m_Father: {fileID: 2028996990}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -23.187}
->>>>>>> Stashed changes
 --- !u!65 &117951743
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -430,15 +420,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 283102435}
   serializedVersion: 2
-<<<<<<< Updated upstream
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -400, y: -865.637, z: 0}
   m_LocalScale: {x: 0.63938, y: 0.63938, z: 0.63938}
-=======
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -400.00003, y: -866.6667, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
->>>>>>> Stashed changes
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 321500340}
@@ -473,9 +457,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 615540380}
   - {fileID: 283102436}
+  - {fileID: 117951742}
   - {fileID: 1184535306}
+  - {fileID: 615540380}
   m_Father: {fileID: 1887389884}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!225 &321500341
@@ -629,10 +614,6 @@ MonoBehaviour:
   displayPoint: {fileID: 283102436}
   detailObjects:
   - {fileID: 117951741}
-  - {fileID: 1184535305}
-  - {fileID: 1132397644}
-  - {fileID: 2071405524}
-  - {fileID: 1250369289}
 --- !u!1 &625070522
 GameObject:
   m_ObjectHideFlags: 0
@@ -669,10 +650,10 @@ RectTransform:
   - {fileID: 1697652502}
   m_Father: {fileID: 1887389884}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0.0066528}
+  m_SizeDelta: {x: 800, y: 1733.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &625070524
 CanvasGroup:
@@ -950,7 +931,7 @@ GameObject:
   - component: {fileID: 1184535308}
   - component: {fileID: 1184535307}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Re
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -964,8 +945,8 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1184535305}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.7797557}
-  m_LocalScale: {x: 0.8143801, y: 0.8143801, z: 0.8143801}
+  m_LocalPosition: {x: 0, y: 0, z: 0.7797555}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 116091806}
@@ -973,9 +954,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0, y: -129}
-  m_SizeDelta: {x: 167.49, y: 50.599976}
-  m_Pivot: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: -9, y: -304}
+  m_SizeDelta: {x: 167.49, y: 50.6}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1184535307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1551,7 +1532,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 94}
+  m_AnchoredPosition: {x: 0, y: 68}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1697652503
@@ -1793,12 +1774,7 @@ Transform:
   - {fileID: 1132397645}
   - {fileID: 2071405525}
   - {fileID: 1250369290}
-<<<<<<< Updated upstream
   m_Father: {fileID: 1887389884}
-=======
-  - {fileID: 117951742}
-  m_Father: {fileID: 0}
->>>>>>> Stashed changes
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!225 &2028996992
 CanvasGroup:

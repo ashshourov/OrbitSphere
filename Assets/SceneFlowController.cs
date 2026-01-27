@@ -31,17 +31,34 @@ public class SceneFlowController : MonoBehaviour
         if (titleModule != null)
         {
             scenes[AppSceneState.Title] = titleModule;
+            Debug.Log("✅ Title module registered");
+        }
+        else
+        {
+            Debug.LogError("❌ Title module not assigned! Drag the SceneTitle GameObject here.");
         }
 
         if (orbitModule != null)
         {
             scenes[AppSceneState.Orbit] = orbitModule;
+            Debug.Log("✅ Orbit module registered");
+        }
+        else
+        {
+            Debug.LogError("❌ Orbit module not assigned! Drag the OrbitSceneModule GameObject here.");
         }
 
         if (detailModule != null)
         {
             scenes[AppSceneState.Detail] = detailModule;
+            Debug.Log("✅ Detail module registered");
         }
+        else
+        {
+            Debug.LogError("❌ Detail module not assigned! Drag the SceneDetailModule GameObject here.");
+        }
+
+        Debug.Log($"📊 SceneFlowController: Registered {scenes.Count}/3 modules");
     }
 
     void Start()
@@ -50,10 +67,15 @@ public class SceneFlowController : MonoBehaviour
         {
             StartCoroutine(SwitchScene(AppSceneState.Title));
         }
+        else
+        {
+            Debug.LogError("❌ Cannot start - not all 3 modules assigned!");
+        }
     }
 
     public void ChangeScene(AppSceneState target)
     {
+        Debug.Log($"🔄 Requesting scene change: {currentState} → {target}");
         if (target != currentState)
             StartCoroutine(SwitchScene(target));
     }
@@ -62,8 +84,11 @@ public class SceneFlowController : MonoBehaviour
     {
         if (!scenes.ContainsKey(target))
         {
+            Debug.LogError($"❌ Scene {target} not registered!");
             yield break;
         }
+
+        Debug.Log($"🚪 Exiting {currentState}...");
         
         // Exit current scene
         if (scenes.ContainsKey(currentState))
@@ -71,8 +96,10 @@ public class SceneFlowController : MonoBehaviour
 
         // Enter new scene
         currentState = target;
+        Debug.Log($"➡️ Entering {target}...");
         
         OnSceneChanged?.Invoke(target);
         yield return scenes[target].Enter();
+        Debug.Log($"✅ {target} state active");
     }
 }
