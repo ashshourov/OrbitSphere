@@ -14,15 +14,10 @@ public class SceneTitleModule : MonoBehaviour, ISceneModule
 
     void OnEnable()
     {
-        Debug.Log($"✓ SceneTitleModule enabled on {gameObject.name}");
-        if (canvasGroup == null)
-            Debug.LogWarning("⚠️ SceneTitleModule: title canvasGroup not assigned!");
     }
 
     public IEnumerator Enter()
     {
-        Debug.Log("🎬 SceneTitleModule: Entering Title state");
-        
         // HIDE ALL SPHERES for Scene 1
         var allSpheres = FindObjectsOfType<Transform>();
         foreach (var sphere in allSpheres)
@@ -73,7 +68,6 @@ public class SceneTitleModule : MonoBehaviour, ISceneModule
         
         if (canvasGroup == null)
         {
-            Debug.LogError("❌ SceneTitleModule: canvasGroup is null! Cannot fade.");
             yield break;
         }
 
@@ -89,25 +83,18 @@ public class SceneTitleModule : MonoBehaviour, ISceneModule
             yield return null;
         }
         canvasGroup.alpha = 1;
-        Debug.Log("✅ Title fade in complete - only title visible");
 
         // Wait 2 seconds then move to orbit scene automatically
         yield return new WaitForSeconds(2f);
         
         if (SceneFlowController.Instance != null)
         {
-            Debug.Log("🔄 SceneTitleModule: Auto-transitioning to Orbit");
             SceneFlowController.Instance.ChangeScene(AppSceneState.Orbit);
-        }
-        else
-        {
-            Debug.LogError("❌ SceneTitleModule: SceneFlowController.Instance is null!");
         }
     }
 
     public IEnumerator Exit()
     {
-        Debug.Log("📉 SceneTitleModule: Exiting Title state");
         if (canvasGroup != null)
         {
             canvasGroup.blocksRaycasts = false;

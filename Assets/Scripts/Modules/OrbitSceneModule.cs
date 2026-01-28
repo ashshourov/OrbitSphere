@@ -15,19 +15,15 @@ public class OrbitSceneModule : MonoBehaviour, ISceneModule
 
     void Start()
     {
-        Debug.Log("🌍 OrbitSceneModule: Initializing");
-        
         // Discover Orbit2D scripts if not assigned
         if (orbitScripts == null || orbitScripts.Length == 0)
         {
             discoveredOrbits.Clear();
             discoveredOrbits.AddRange(FindObjectsOfType<Orbit2D>());
-            Debug.Log($"🔍 OrbitSceneModule: Auto-discovered {discoveredOrbits.Count} Orbit2D scripts");
         }
         else
         {
             discoveredOrbits.AddRange(orbitScripts);
-            Debug.Log($"📋 OrbitSceneModule: Using assigned {orbitScripts.Length} Orbit2D scripts");
         }
 
         // Discover spheres if not assigned
@@ -41,7 +37,6 @@ public class OrbitSceneModule : MonoBehaviour, ISceneModule
                     sphereList.Add(t);
             }
             spheres = sphereList.ToArray();
-            Debug.Log($"🔍 OrbitSceneModule: Auto-discovered {spheres.Length} spheres");
         }
 
         // Add click handlers to spheres
@@ -54,21 +49,17 @@ public class OrbitSceneModule : MonoBehaviour, ISceneModule
                 handler = sphere.gameObject.AddComponent<SphereClickHandler>();
             
             handler.OnSphereSelected += HandleSphereSelected;
-            Debug.Log($"✓ Added click handler to {sphere.gameObject.name}");
         }
     }
 
     public IEnumerator Enter()
     {
-        Debug.Log("🎬 OrbitSceneModule: Entering Orbit state");
-        
         // Enable orbits
         foreach (var orbit in discoveredOrbits)
         {
             if (orbit != null)
             {
                 orbit.enabled = true;
-                Debug.Log($"▶️ Enabled orbit: {orbit.gameObject.name}");
             }
         }
 
@@ -82,7 +73,6 @@ public class OrbitSceneModule : MonoBehaviour, ISceneModule
                 var lineRenderer = viz.GetComponent<LineRenderer>();
                 if (lineRenderer != null)
                     lineRenderer.enabled = true;
-                Debug.Log($"▶️ Enabled visualizer: {viz.gameObject.name}");
             }
         }
 
@@ -146,20 +136,16 @@ public class OrbitSceneModule : MonoBehaviour, ISceneModule
         }
 
         yield return new WaitForSeconds(fadeInTime);
-        Debug.Log("✅ Orbit state ready - spheres rotating");
     }
 
     public IEnumerator Exit()
     {
-        Debug.Log("🚪 OrbitSceneModule: Exiting Orbit state");
-        
         // Disable orbits IMMEDIATELY (don't wait)
         foreach (var orbit in discoveredOrbits)
         {
             if (orbit != null)
             {
                 orbit.enabled = false;
-                Debug.Log($"⏹️ Disabled orbit: {orbit.gameObject.name}");
             }
         }
 
@@ -173,13 +159,10 @@ public class OrbitSceneModule : MonoBehaviour, ISceneModule
         {
             yield return new WaitForSeconds(0.5f);
         }
-        
-        Debug.Log("✅ Orbit state exited - orbits disabled");
     }
 
     private void HandleSphereSelected(Transform selectedSphere)
     {
-        Debug.Log($"🎯 Sphere selected: {selectedSphere.gameObject.name}");
         SelectionContext.SelectedTransform = selectedSphere;
         SceneFlowController.Instance.ChangeScene(AppSceneState.Detail);
     }

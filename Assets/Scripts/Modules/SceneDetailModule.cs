@@ -22,7 +22,6 @@ public class SceneDetailModule : MonoBehaviour, ISceneModule
             restartButton.onClick.RemoveAllListeners();
             // Add the restart listener
             restartButton.onClick.AddListener(Restart);
-            Debug.Log("✅ SceneDetailModule: Restart button listener added");
         }
         else
         {
@@ -39,8 +38,6 @@ public class SceneDetailModule : MonoBehaviour, ISceneModule
 
     public IEnumerator Enter()
     {
-        Debug.Log("🎬 SceneDetailModule: Entering Detail state");
-        
         // Disable all Orbit2D scripts
         var orbits = FindObjectsOfType<Orbit2D>();
         foreach (var orbit in orbits)
@@ -74,7 +71,6 @@ public class SceneDetailModule : MonoBehaviour, ISceneModule
                 if (renderer != null)
                 {
                     renderer.enabled = false;
-                    Debug.Log($"📉 Disabled renderer: {sphere.gameObject.name}");
                 }
             }
         }
@@ -109,22 +105,17 @@ public class SceneDetailModule : MonoBehaviour, ISceneModule
         {
             extraGroup.blocksRaycasts = true;  // CRITICAL: Allow button clicks
             yield return TransitionUtility.Fade(extraGroup, 0, 1, 1f);
-            Debug.Log("✅ Detail UI visible and clickable");
         }
         
         if (restartButton != null)
         {
             restartButton.interactable = true;
-            Debug.Log("✅ Restart button enabled");
         }
             
-        Debug.Log("✅ SceneDetailModule: Detail state ready");
     }
 
     public IEnumerator Exit()
     {
-        Debug.Log("🚪 SceneDetailModule: Exiting Detail state");
-        
         if (detailDisplay != null)
             detailDisplay.HideDetails();
 
@@ -158,7 +149,6 @@ public class SceneDetailModule : MonoBehaviour, ISceneModule
                 if (renderer != null)
                 {
                     renderer.enabled = true;
-                    Debug.Log($"📈 Enabled renderer: {sphere.gameObject.name}");
                 }
             }
         }
@@ -181,7 +171,6 @@ public class SceneDetailModule : MonoBehaviour, ISceneModule
             if (orbit != null)
             {
                 orbit.enabled = true;
-                Debug.Log($"▶️ Re-enabled orbit: {orbit.gameObject.name}");
             }
         }
 
@@ -195,20 +184,14 @@ public class SceneDetailModule : MonoBehaviour, ISceneModule
                 var lineRenderer = viz.GetComponent<LineRenderer>();
                 if (lineRenderer != null)
                     lineRenderer.enabled = true;
-                Debug.Log($"▶️ Re-enabled visualizer: {viz.gameObject.name}");
             }
         }
-        
-        Debug.Log("✅ Exited Detail state");
     }
 
     public void Restart()
     {
-        Debug.Log("🔄 SceneDetailModule: Restart button pressed!");
-        
         if (SceneFlowController.Instance != null)
         {
-            Debug.Log("✅ Transitioning to Title");
             SceneFlowController.Instance.ChangeScene(AppSceneState.Title);
         }
         else
