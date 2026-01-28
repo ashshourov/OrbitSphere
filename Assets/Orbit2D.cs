@@ -15,11 +15,15 @@ public class Orbit2D : MonoBehaviour
 
     float angle;
 
-    void Start()
+    void OnEnable()
     {
         // Calculate initial angle based on start position
-        Vector2 offset = transform.position - center.position;
-        angle = Mathf.Atan2(offset.y, offset.x);
+        // OnEnable ensures angle is recalculated when script is re-enabled
+        if (center != null)
+        {
+            Vector2 offset = transform.position - center.position;
+            angle = Mathf.Atan2(offset.y, offset.x);
+        }
     }
 
     void Update()

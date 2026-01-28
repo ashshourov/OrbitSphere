@@ -25,6 +25,9 @@ public class SceneFlowController : MonoBehaviour
         }
         Instance = this;
 
+        // IMMEDIATELY HIDE ALL ELEMENTS AT STARTUP
+        HideAllElements();
+
         scenes = new Dictionary<AppSceneState, ISceneModule>();
         
         // Manually assign the three modules
@@ -59,6 +62,50 @@ public class SceneFlowController : MonoBehaviour
         }
 
         Debug.Log($"📊 SceneFlowController: Registered {scenes.Count}/3 modules");
+    }
+
+    void HideAllElements()
+    {
+        // Hide all spheres
+        var allSpheres = FindObjectsOfType<Transform>();
+        foreach (var sphere in allSpheres)
+        {
+            if (sphere.gameObject.name.Contains("Sphere"))
+            {
+                var renderer = sphere.GetComponent<Renderer>();
+                if (renderer != null)
+                    renderer.enabled = false;
+            }
+        }
+
+        // Disable all orbits
+        var orbits = FindObjectsOfType<Orbit2D>();
+        foreach (var orbit in orbits)
+        {
+            if (orbit != null)
+                orbit.enabled = false;
+        }
+
+        // Disable all visualizers
+        var visualizers = FindObjectsOfType<OrbitVisualizer2D>();
+        foreach (var viz in visualizers)
+        {
+            if (viz != null)
+            {
+                viz.enabled = false;
+                var lineRenderer = viz.GetComponent<LineRenderer>();
+                if (lineRenderer != null)
+                    lineRenderer.enabled = false;
+            }
+        }
+
+        // Hide canvas groups
+        var allCanvasGroups = FindObjectsOfType<CanvasGroup>();
+        foreach (var cg in allCanvasGroups)
+        {
+            cg.alpha = 0;
+            cg.blocksRaycasts = false;
+        }
     }
 
     void Start()

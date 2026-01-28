@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class SceneDetailModule : MonoBehaviour, ISceneModule
 {
@@ -40,11 +41,53 @@ public class SceneDetailModule : MonoBehaviour, ISceneModule
     {
         Debug.Log("🎬 SceneDetailModule: Entering Detail state");
         
-        // Hide orbits/spheres
+        // Disable all Orbit2D scripts
+        var orbits = FindObjectsOfType<Orbit2D>();
+        foreach (var orbit in orbits)
+        {
+            if (orbit != null)
+            {
+                orbit.enabled = false;
+            }
+        }
+
+        // Disable all OrbitVisualizer2D scripts and their LineRenderers
+        var visualizers = FindObjectsOfType<OrbitVisualizer2D>();
+        foreach (var viz in visualizers)
+        {
+            if (viz != null)
+            {
+                viz.enabled = false;
+                var lineRenderer = viz.GetComponent<LineRenderer>();
+                if (lineRenderer != null)
+                    lineRenderer.enabled = false;
+            }
+        }
+
+        // IMMEDIATELY DISABLE all other sphere renderers
+        var allSpheres = FindObjectsOfType<Transform>();
+        foreach (var sphere in allSpheres)
+        {
+            if (sphere.gameObject.name.Contains("Sphere") && sphere != SelectionContext.SelectedTransform)
+            {
+                var renderer = sphere.GetComponent<Renderer>();
+                if (renderer != null)
+                {
+                    renderer.enabled = false;
+                    Debug.Log($"📉 Disabled renderer: {sphere.gameObject.name}");
+                }
+            }
+        }
+
+        // Hide orbits/spheres canvas
         if (orbitsCanvasGroup != null)
         {
             orbitsCanvasGroup.blocksRaycasts = false;
             yield return TransitionUtility.Fade(orbitsCanvasGroup, 1, 0, 0.5f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.5f);
         }
 
         // Move selected sphere to display point
@@ -105,11 +148,55 @@ public class SceneDetailModule : MonoBehaviour, ISceneModule
             );
         }
 
-        // Show orbits/spheres again
+        // IMMEDIATELY RE-ENABLE all other sphere renderers
+        var allSpheres = FindObjectsOfType<Transform>();
+        foreach (var sphere in allSpheres)
+        {
+            if (sphere.gameObject.name.Contains("Sphere") && sphere != SelectionContext.SelectedTransform)
+            {
+                var renderer = sphere.GetComponent<Renderer>();
+                if (renderer != null)
+                {
+                    renderer.enabled = true;
+                    Debug.Log($"📈 Enabled renderer: {sphere.gameObject.name}");
+                }
+            }
+        }
+
+        // Fade in the orbits canvas
         if (orbitsCanvasGroup != null)
         {
             orbitsCanvasGroup.blocksRaycasts = true;
             yield return TransitionUtility.Fade(orbitsCanvasGroup, 0, 1, 0.5f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        // Re-enable all Orbit2D scripts
+        var orbits = FindObjectsOfType<Orbit2D>();
+        foreach (var orbit in orbits)
+        {
+            if (orbit != null)
+            {
+                orbit.enabled = true;
+                Debug.Log($"▶️ Re-enabled orbit: {orbit.gameObject.name}");
+            }
+        }
+
+        // Re-enable all OrbitVisualizer2D scripts
+        var visualizers = FindObjectsOfType<OrbitVisualizer2D>();
+        foreach (var viz in visualizers)
+        {
+            if (viz != null)
+            {
+                viz.enabled = true;
+                var lineRenderer = viz.GetComponent<LineRenderer>();
+                if (lineRenderer != null)
+                    lineRenderer.enabled = true;
+                Debug.Log($"▶️ Re-enabled visualizer: {viz.gameObject.name}");
+            }
         }
         
         Debug.Log("✅ Exited Detail state");

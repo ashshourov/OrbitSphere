@@ -23,27 +23,52 @@ public class SceneTitleModule : MonoBehaviour, ISceneModule
     {
         Debug.Log("🎬 SceneTitleModule: Entering Title state");
         
-        // Hide orbits and detail UI
+        // HIDE ALL SPHERES for Scene 1
+        var allSpheres = FindObjectsOfType<Transform>();
+        foreach (var sphere in allSpheres)
+        {
+            if (sphere.gameObject.name.Contains("Sphere"))
+            {
+                var renderer = sphere.GetComponent<Renderer>();
+                if (renderer != null)
+                {
+                    renderer.enabled = false;
+                }
+            }
+        }
+
+        // Disable all orbits
+        var orbits = FindObjectsOfType<Orbit2D>();
+        foreach (var orbit in orbits)
+        {
+            if (orbit != null)
+                orbit.enabled = false;
+        }
+
+        // Disable all visualizers and their line renderers
+        var visualizers = FindObjectsOfType<OrbitVisualizer2D>();
+        foreach (var viz in visualizers)
+        {
+            if (viz != null)
+            {
+                viz.enabled = false;
+                var lineRenderer = viz.GetComponent<LineRenderer>();
+                if (lineRenderer != null)
+                    lineRenderer.enabled = false;
+            }
+        }
+
+        // Hide canvas groups
         if (orbitsCanvasGroup != null)
         {
-            Debug.Log("📉 Hiding orbits");
             orbitsCanvasGroup.alpha = 0;
             orbitsCanvasGroup.blocksRaycasts = false;
-        }
-        else
-        {
-            Debug.LogWarning("⚠️ orbitsCanvasGroup not assigned!");
         }
 
         if (detailCanvasGroup != null)
         {
-            Debug.Log("📉 Hiding detail UI");
             detailCanvasGroup.alpha = 0;
             detailCanvasGroup.blocksRaycasts = false;
-        }
-        else
-        {
-            Debug.LogWarning("⚠️ detailCanvasGroup not assigned!");
         }
         
         if (canvasGroup == null)
@@ -52,7 +77,7 @@ public class SceneTitleModule : MonoBehaviour, ISceneModule
             yield break;
         }
 
-        // Fade in title
+        // FADE IN ONLY TITLE TEXT
         canvasGroup.alpha = 0;
         canvasGroup.blocksRaycasts = true;
         
